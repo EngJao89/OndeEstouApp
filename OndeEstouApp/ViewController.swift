@@ -36,21 +36,21 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         let longitude = localizacaoUsuario.coordinate.longitude
         let latitude = localizacaoUsuario.coordinate.latitude
-        
-        self.longitudeLabel.text = String(longitude)
-        self.latitudeLabel.text = String(latitude)
+
+        self.longitudeLabel?.text = String(longitude)
+        self.latitudeLabel?.text = String(latitude)
         
         if localizacaoUsuario.speed > 0 {
-            velocidadeLabel.text = String( localizacaoUsuario.speed )
+            velocidadeLabel?.text = String( localizacaoUsuario.speed )
         }
         
         let deltaLat: CLLocationDegrees = 0.01
         let deltaLon: CLLocationDegrees = 0.01
-        
-        let localizacao: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
-        let areaExibicao: MKCoordinateSpan = MKCoordinateSpanMake(deltaLat, deltaLon)
-        let regiao: MKCoordinateRegion = MKCoordinateRegionMake(localizacao, areaExibicao)
-        mapa.setRegion(regiao, animated: true)
+
+        let localizacao: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let areaExibicao: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: deltaLat, longitudeDelta: deltaLon)
+        let regiao: MKCoordinateRegion = MKCoordinateRegion(center: localizacao, span: areaExibicao)
+        mapa?.setRegion(regiao, animated: true)
         
         CLGeocoder().reverseGeocodeLocation( localizacaoUsuario) { (detalhesLocal, erro) in
             
