@@ -42,39 +42,30 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let local = locations.last else {
+            print("Nenhuma localização disponível.")
+            return
+        }
         
-        let local = locations.last!
-        
-        //exibe local
-        let localizacao = CLLocationCoordinate2DMake(local.coordinate.latitude , local.coordinate.longitude)
-        let span = MKCoordinateSpanMake(0.01, 0.01)
-        
-        let regiao: MKCoordinateRegion = MKCoordinateRegionMake(localizacao, span)
-        self.mapa.setRegion(regiao, animated: true)
-        
+        exibirLocal(latitude: local.coordinate.latitude, longitude: local.coordinate.longitude)
     }
     
-    func exibirLocal( latitude: Double, longitude: Double ){
+    func exibirLocal(latitude: Double, longitude: Double) {
+        let localizacao = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let regiao = MKCoordinateRegion(center: localizacao, span: span)
         
-        //exibe local
-        let localizacao = CLLocationCoordinate2DMake(latitude, longitude)
-        let span = MKCoordinateSpanMake(0.01, 0.01)
-        
-        let regiao: MKCoordinateRegion = MKCoordinateRegionMake(localizacao, span)
-        self.mapa.setRegion(regiao, animated: true)
-        
+        mapa?.setRegion(regiao, animated: true)
     }
     
     func exibirAnotacao( viagem: Dictionary<String, String> ){
         
-        //Exibe anotação com os dados de endereco
         if let localViagem = viagem["local"] {
             if let latitudeS = viagem["latitude"] {
                 if let longitudeS = viagem["longitude"] {
                     if let latitude = Double(latitudeS) {
                         if let longitude = Double(longitudeS) {
                             
-                            //Adiciona anotacao
                             let anotacao = MKPointAnnotation()
                             
                             anotacao.coordinate.latitude = latitude
